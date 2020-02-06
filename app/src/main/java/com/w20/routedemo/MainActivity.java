@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     double dest_lng, dest_lat;
     final int RADIUS = 1500;
 
+    public static boolean directionRequested;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Toast.makeText(this, "Restaurants", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_distance:
+            case R.id.btn_direction:
                 url = getDirectionUrl();
                 dataTransfer = new Object[3];
                 dataTransfer[0] = mMap;
@@ -187,6 +190,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 GetDirectionData getDirectionData = new GetDirectionData();
                 // execute asynchronously
                 getDirectionData.execute(dataTransfer);
+                if (view.getId() == R.id.btn_direction)
+                    directionRequested = true;
+                else
+                    directionRequested = false;
                 break;
 
         }

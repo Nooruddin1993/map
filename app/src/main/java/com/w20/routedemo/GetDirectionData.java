@@ -1,10 +1,14 @@
 package com.w20.routedemo;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -47,5 +51,20 @@ public class GetDirectionData extends AsyncTask<Object, String, String> {
         // Create New Marker with new Title And Snippet
         MarkerOptions options = new MarkerOptions().position(latlng).draggable(true).title("Duration: " + duration).snippet("Distance: " + distance);
         mMap.addMarker(options);
+
+        if (MainActivity.directionRequested) {
+            String[] directionsList;
+            DataParser directionparser = new DataParser();
+            directionsList = directionparser.parseDirections(s);
+            displeyDirections(directionsList);
+        }
+    }
+
+    private void displeyDirections(String[] directionsList) {
+        int count = directionsList.length;
+        for (int i=0; i<count; i++) {
+            PolylineOptions options = new PolylineOptions().color(Color.RED).width(10).addAll(PolyUtil.decode(directionsList[i]));
+            mMap.addPolyline(options);
+        }
     }
 }
